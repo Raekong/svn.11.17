@@ -1,0 +1,47 @@
+package edu.nuist.ojs.baseinfo.entity;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+
+@Repository
+public interface UserReps extends JpaRepository<User, Long> {
+
+	public User findByUserId(long userId);
+
+	public User findByPublisherIdAndEmail(long publisherId, String email);
+
+    public User findByPublisherIdAndEmailAndPassword(long publisherId, String email, String password);
+
+    public List<User> findByPublisherId(long publisherId);
+
+    public List<User> findByRoot(boolean root);
+
+	@Query(value = "select * from user where email=:email and super_user=true",nativeQuery = true)
+	public User findSuperByEmail(String email);
+
+
+	public User save(User user);
+
+	@Transactional
+	@Modifying
+	@Query(value = "update user set password=?2 where user_id=?1 ", nativeQuery = true)
+	public void resetPassword(long id, String password);
+
+	@Transactional
+	@Modifying
+	@Query(value = "update user set i18n=?2 where user_id=?1 ", nativeQuery = true)
+	public void updateI18n(long id, String lang);
+
+
+	@Transactional
+	@Modifying
+	@Query(value = "update user set password=?3 where publisher_id=?1 and email=?2 ", nativeQuery = true)
+	public void updatePassword(long publishId, String email, String password);
+
+}

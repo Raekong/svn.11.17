@@ -1,0 +1,79 @@
+package edu.nuist.ojs.baseinfo.entity;
+
+
+import cn.hutool.crypto.SecureUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+
+/**
+ * @author MicJoy
+ *
+ * <p> 业务逻辑的实现
+ *
+ */
+@Service
+@Transactional
+public class UserService {
+
+	@Autowired
+	private edu.nuist.ojs.baseinfo.entity.UserReps UserReps;
+	public void resetPassword(String password, long user_id) {
+		String md5password = SecureUtil.md5(password);
+		UserReps.resetPassword(user_id, md5password);
+	}
+
+	public User update(User user) {
+		return UserReps.save(user);
+	}
+
+	public User findByUserId(long userId){return UserReps.findByUserId(userId);}
+
+	public User findByPublisherIdAndEmail(long publisherId, String email){
+		return UserReps.findByPublisherIdAndEmail(publisherId,email);
+	}
+
+
+	public User findByPublisherIdAndEmailAndPassword(long publisherId, String email, String password){
+		String md5password=SecureUtil.md5(password);
+		return UserReps.findByPublisherIdAndEmailAndPassword(publisherId,email,md5password);
+	}
+	
+	public List<User> findByPublisherId(long publisherId){
+		return UserReps.findByPublisherId(publisherId);
+	}
+	
+	public User findSuperByEmail(String email){
+		return UserReps.findSuperByEmail(email);
+	}
+
+	public List<User> findByRoot(boolean root){
+		return UserReps.findByRoot(root);
+	}
+	
+	public User checkAndSave(User user){
+
+		if(findByPublisherIdAndEmail(user.getPublisherId(),user.getEmail())==null){
+			String md5password = SecureUtil.md5(user.getPassword());
+			user.setPassword(md5password);
+			return UserReps.save(user);
+		}
+		return null;
+	}
+
+	public void updateI18n(long id, String lang){
+		UserReps.updateI18n(id, lang);
+	}
+
+	public User updatePassword(long publisherId, String email, String password){
+		String md5password = SecureUtil.md5(password);
+		UserReps.updatePassword(publisherId,  email,   md5password);
+		return UserReps.findByPublisherIdAndEmail(publisherId, email);
+	}
+
+
+}
+

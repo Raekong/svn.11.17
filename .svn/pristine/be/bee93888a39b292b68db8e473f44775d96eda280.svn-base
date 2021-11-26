@@ -1,0 +1,48 @@
+package edu.nuist.ojs.baseinfo.stub;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.alibaba.fastjson.JSONObject;
+
+import edu.nuist.ojs.baseinfo.entity.Message;
+import edu.nuist.ojs.baseinfo.entity.Publisher;
+import edu.nuist.ojs.baseinfo.entity.User;
+
+public class ServerParameterHelper {
+    public static HttpServletRequest exec(JSONObject parameter, String api,HttpServletRequest request){
+        switch (api){
+            case "/publish/regist":{
+                Publisher publisher=parameter.getObject("publisher",Publisher.class);
+                User user=parameter.getObject("user",User.class);
+                request.setAttribute("user",user);
+                request.setAttribute("publisher",publisher);
+            }break;
+            case "/publish/update":{
+                Publisher publisher=parameter.getObject("publisher",Publisher.class);
+                request.setAttribute("publisher",publisher);
+            }break;
+//            case "/user/regist":{
+//                User user= parameter.getObject("user", User.class);
+//                String publisherAbbr=parameter.get("publisherAbbr").toString();
+//                request.setAttribute("user",user);
+//                request.setAttribute("publisherAbbr",publisherAbbr);
+//            }break;
+            case "/user/regist":{
+                User user= parameter.getObject("u", User.class);
+                request.setAttribute("user",user);
+                break;
+            }
+            case "/message/save":{
+                Message message=parameter.getObject("message",Message.class);
+                request.setAttribute("message",message);
+            }break;
+            default:{
+                for (String key : parameter.keySet()) {
+                    request.setAttribute(key, parameter.get(key));
+                }
+            }
+        }
+        
+        return request;
+    }
+}

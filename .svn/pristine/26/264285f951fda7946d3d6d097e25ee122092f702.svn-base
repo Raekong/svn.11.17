@@ -1,0 +1,21 @@
+package edu.nuist.ojs.baseinfo.entity;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MessageService {
+    @Autowired
+    MessageReps messageReps;
+
+    public Message save(Message message){
+        return messageReps.save(message);
+    }
+
+    public List<Message> findByRecvId(long recvId){
+        return messageReps.findByRecvId(recvId);
+    }
+}

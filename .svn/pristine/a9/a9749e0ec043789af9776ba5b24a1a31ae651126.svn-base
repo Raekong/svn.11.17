@@ -1,0 +1,49 @@
+package edu.nuist.ojs.baseinfo.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "message")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
+public class Message {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private long senderId;
+
+    private String senderEmail;
+
+    private long recvId;
+
+    private String recvEmail;
+
+    private String configPoint;
+
+    private long timestamp;
+
+    private boolean email;
+
+    private String emailId;
+
+    private String title;
+
+    @Lob
+    @Column (columnDefinition="TEXT")
+    private String content;
+    @Lob
+    @Column (columnDefinition="TEXT")
+    private String appends;
+
+
+
+
+}
