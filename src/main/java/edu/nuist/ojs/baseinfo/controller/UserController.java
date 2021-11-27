@@ -76,7 +76,7 @@ public class UserController {
             @RequestAttribute String password,
             @RequestAttribute long publishId){
         User user= userService.findByPublisherIdAndEmailAndPassword(publishId, email, password);
-        if (user==null ) return new User();
+        if (user == null ) return new User();
         else return user;
     }
 
@@ -231,18 +231,5 @@ public class UserController {
 
 
         return rst;
-    }
-
-    @RequestMapping("/user/turn")
-    public User turnUser(@RequestAttribute long id){
-        User user = userService.findByUserId(id);
-        boolean disable = user.isDisabled();
-        if(disable==true){
-            user.setDisabled(false);
-        }
-        else {
-            user.setDisabled(true);
-        }
-        return userService.save(user);
     }
 }
