@@ -157,5 +157,9 @@ public class UserService {
 		return UserReps.findByNameAndEmailAndInterestsAndAffiliationLike(email,  name,  interests,  affiliation,  pid);
 	}
 
+
+	public User findByPublisherIdAndEmailAndPassword1(long publisherId, String email, String md5password){
+		return UserReps.findByPublisherIdAndEmailAndPassword(publisherId,email,md5password);
+	}
 }
 

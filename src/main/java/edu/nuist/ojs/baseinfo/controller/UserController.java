@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @RequestMapping("/user/setI18n")
-    public User setI18n(@RequestAttribute long uid, @RequestAttribute String lang){
+    public User setI18n(@RequestAttribute long uid, @RequestAttribute String lang) {
         userService.updateI18n(uid, lang);
         return userService.findByUserId(uid);
     }
@@ -231,5 +231,27 @@ public class UserController {
 
 
         return rst;
+    }
+    @RequestMapping("/user/root")
+    public User rootUser(@RequestAttribute long id){
+        User user = userService.findByUserId(id);
+        boolean root = user.isRoot();
+        if(root==true){
+            user.setRoot(false);
+        }
+        else {
+            user.setRoot(false);
+        }
+        return userService.save(user);
+    }
+
+    @RequestMapping("/user/loginAs")
+    public User login1(
+            @RequestAttribute String email,
+            @RequestAttribute String password,
+            @RequestAttribute long publishId){
+        User user= userService.findByPublisherIdAndEmailAndPassword1(publishId, email, password);
+        if (user == null ) return new User();
+        else return user;
     }
 }
