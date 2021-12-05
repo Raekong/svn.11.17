@@ -236,11 +236,11 @@ public class UserController {
     public User rootUser(@RequestAttribute long id){
         User user = userService.findByUserId(id);
         boolean root = user.isRoot();
-        if(root==true){
+        if(root == true){
             user.setRoot(false);
         }
         else {
-            user.setRoot(false);
+            user.setRoot(true);
         }
         return userService.save(user);
     }
